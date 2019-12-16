@@ -6,5 +6,5 @@ import com.hz.ssm.utils.PageBean;
 public interface EmployeeService {
 
 	PageBean<Employee> findEmpByPage(Integer indexpage);
-
+          
 }

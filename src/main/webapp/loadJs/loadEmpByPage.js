@@ -51,12 +51,12 @@ function loadEmpByPage(indexpage){
 		$da.each(function(index,dom){
 			
 			var items = "<tr>";
-			items += "<td>"+(index+1)+"</td>";
-			items += "<td>"+dom.ename+"</td>";
-			items += "<td>"+dom.job+"</td>";
-			items += "<td>"+dom.mgr+"</td>";
-			items += "<td>"+dom.hiredate+"</td>";
-			items += "<td>"+dom.sal+"</td>";
+			items += "<td>"+dom.employeeId+"</td>";
+			items += "<td>"+dom.employeeName+"</td>";
+			items += "<td>"+dom.degree+"</td>";
+			items += "<td>"+dom.departmentId+"</td>";
+			items += "<td>"+turnTime(dom.bornDate)+"</td>";
+			items += "<td>"+dom.salary+"</td>";
 			items += "<td><a href=''>编辑</a>&nbsp;<a href=''>删除</a></td>";
 			items +="</tr>";
 			

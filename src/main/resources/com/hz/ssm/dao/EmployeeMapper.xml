@@ -2,14 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hz.ssm.dao.EmployeeMapper" >
   <resultMap id="BaseResultMap" type="com.hz.ssm.pojo.Employee" >
-    <id column="EMPNO" property="empno" jdbcType="DECIMAL" />
-    <result column="ENAME" property="ename" jdbcType="VARCHAR" />
-    <result column="JOB" property="job" jdbcType="VARCHAR" />
-    <result column="MGR" property="mgr" jdbcType="DECIMAL" />
-    <result column="HIREDATE" property="hiredate" jdbcType="TIMESTAMP" />
-    <result column="SAL" property="sal" jdbcType="DECIMAL" />
-    <result column="COMM" property="comm" jdbcType="DECIMAL" />
-    <result column="DEPTNO" property="deptno" jdbcType="DECIMAL" />
+    <id column="Employee_Id" property="employeeId" jdbcType="VARCHAR" />
+    <result column="Employee_Name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="Employee_Id_No" property="employeeIdNo" jdbcType="VARCHAR" />
+    <result column="Gender" property="gender" jdbcType="INTEGER" />
+    <result column="Born_Date" property="bornDate" jdbcType="TIMESTAMP" />
+    <result column="Degree" property="degree" jdbcType="VARCHAR" />
+    <result column="School_Tag" property="schoolTag" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="Phone_No" property="phoneNo" jdbcType="INTEGER" />
+    <result column="Address" property="address" jdbcType="VARCHAR" />
+    <result column="Department_Id" property="departmentId" jdbcType="INTEGER" />
+    <result column="Position_Id" property="positionId" jdbcType="INTEGER" />
+    <result column="Salary" property="salary" jdbcType="DOUBLE" />
+    <result column="Contract_Id" property="contractId" jdbcType="VARCHAR" />
+    <result column="Employee_Desc" property="employeeDesc" jdbcType="VARCHAR" />
+    <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+    <result column="remark2" property="remark2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO
+    Employee_Id, Employee_Name, Employee_Id_No, Gender, Born_Date, Degree, School_Tag, 
+    Email, Phone_No, Address, Department_Id, Position_Id, Salary, Contract_Id, Employee_Desc, 
+    remark1, remark2
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hz.ssm.pojo.EmployeeExample" >
     select
@@ -78,7 +89,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from EMP
+    from employee
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,117 +97,204 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from EMP
-    where EMPNO = #{empno,jdbcType=DECIMAL}
+    from employee
+    where Employee_Id = #{employeeId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short" >
-    delete from EMP
-    where EMPNO = #{empno,jdbcType=DECIMAL}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from employee
+    where Employee_Id = #{employeeId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.hz.ssm.pojo.EmployeeExample" >
-    delete from EMP
+    delete from employee
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.hz.ssm.pojo.Employee" >
-    insert into EMP (EMPNO, ENAME, JOB, 
-      MGR, HIREDATE, SAL, 
-      COMM, DEPTNO)
-    values (#{empno,jdbcType=DECIMAL}, #{ename,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
-      #{mgr,jdbcType=DECIMAL}, #{hiredate,jdbcType=TIMESTAMP}, #{sal,jdbcType=DECIMAL}, 
-      #{comm,jdbcType=DECIMAL}, #{deptno,jdbcType=DECIMAL})
+    insert into employee (Employee_Id, Employee_Name, Employee_Id_No, 
+      Gender, Born_Date, Degree, 
+      School_Tag, Email, Phone_No, 
+      Address, Department_Id, Position_Id, 
+      Salary, Contract_Id, Employee_Desc, 
+      remark1, remark2)
+    values (#{employeeId,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, #{employeeIdNo,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{bornDate,jdbcType=TIMESTAMP}, #{degree,jdbcType=VARCHAR}, 
+      #{schoolTag,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phoneNo,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, #{positionId,jdbcType=INTEGER}, 
+      #{salary,jdbcType=DOUBLE}, #{contractId,jdbcType=VARCHAR}, #{employeeDesc,jdbcType=VARCHAR}, 
+      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hz.ssm.pojo.Employee" >
-    insert into EMP
+    insert into employee
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="empno != null" >
-        EMPNO,
+      <if test="employeeId != null" >
+        Employee_Id,
       </if>
-      <if test="ename != null" >
-        ENAME,
+      <if test="employeeName != null" >
+        Employee_Name,
       </if>
-      <if test="job != null" >
-        JOB,
+      <if test="employeeIdNo != null" >
+        Employee_Id_No,
       </if>
-      <if test="mgr != null" >
-        MGR,
+      <if test="gender != null" >
+        Gender,
       </if>
-      <if test="hiredate != null" >
-        HIREDATE,
+      <if test="bornDate != null" >
+        Born_Date,
       </if>
-      <if test="sal != null" >
-        SAL,
+      <if test="degree != null" >
+        Degree,
       </if>
-      <if test="comm != null" >
-        COMM,
+      <if test="schoolTag != null" >
+        School_Tag,
       </if>
-      <if test="deptno != null" >
-        DEPTNO,
+      <if test="email != null" >
+        Email,
+      </if>
+      <if test="phoneNo != null" >
+        Phone_No,
+      </if>
+      <if test="address != null" >
+        Address,
+      </if>
+      <if test="departmentId != null" >
+        Department_Id,
+      </if>
+      <if test="positionId != null" >
+        Position_Id,
+      </if>
+      <if test="salary != null" >
+        Salary,
+      </if>
+      <if test="contractId != null" >
+        Contract_Id,
+      </if>
+      <if test="employeeDesc != null" >
+        Employee_Desc,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="remark2 != null" >
+        remark2,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="empno != null" >
-        #{empno,jdbcType=DECIMAL},
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="ename != null" >
-        #{ename,jdbcType=VARCHAR},
+      <if test="employeeName != null" >
+        #{employeeName,jdbcType=VARCHAR},
       </if>
-      <if test="job != null" >
-        #{job,jdbcType=VARCHAR},
+      <if test="employeeIdNo != null" >
+        #{employeeIdNo,jdbcType=VARCHAR},
       </if>
-      <if test="mgr != null" >
-        #{mgr,jdbcType=DECIMAL},
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
       </if>
-      <if test="hiredate != null" >
-        #{hiredate,jdbcType=TIMESTAMP},
+      <if test="bornDate != null" >
+        #{bornDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="sal != null" >
-        #{sal,jdbcType=DECIMAL},
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
       </if>
-      <if test="comm != null" >
-        #{comm,jdbcType=DECIMAL},
+      <if test="schoolTag != null" >
+        #{schoolTag,jdbcType=VARCHAR},
       </if>
-      <if test="deptno != null" >
-        #{deptno,jdbcType=DECIMAL},
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        #{phoneNo,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=DOUBLE},
+      </if>
+      <if test="contractId != null" >
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeDesc != null" >
+        #{employeeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null" >
+        #{remark2,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.hz.ssm.pojo.EmployeeExample" resultType="java.lang.Integer" >
-    select count(*) from EMP
+    select count(*) from employee
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update EMP
+    update employee
     <set >
-      <if test="record.empno != null" >
-        EMPNO = #{record.empno,jdbcType=DECIMAL},
+      <if test="record.employeeId != null" >
+        Employee_Id = #{record.employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="record.ename != null" >
-        ENAME = #{record.ename,jdbcType=VARCHAR},
+      <if test="record.employeeName != null" >
+        Employee_Name = #{record.employeeName,jdbcType=VARCHAR},
       </if>
-      <if test="record.job != null" >
-        JOB = #{record.job,jdbcType=VARCHAR},
+      <if test="record.employeeIdNo != null" >
+        Employee_Id_No = #{record.employeeIdNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.mgr != null" >
-        MGR = #{record.mgr,jdbcType=DECIMAL},
+      <if test="record.gender != null" >
+        Gender = #{record.gender,jdbcType=INTEGER},
       </if>
-      <if test="record.hiredate != null" >
-        HIREDATE = #{record.hiredate,jdbcType=TIMESTAMP},
+      <if test="record.bornDate != null" >
+        Born_Date = #{record.bornDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.sal != null" >
-        SAL = #{record.sal,jdbcType=DECIMAL},
+      <if test="record.degree != null" >
+        Degree = #{record.degree,jdbcType=VARCHAR},
       </if>
-      <if test="record.comm != null" >
-        COMM = #{record.comm,jdbcType=DECIMAL},
+      <if test="record.schoolTag != null" >
+        School_Tag = #{record.schoolTag,jdbcType=VARCHAR},
       </if>
-      <if test="record.deptno != null" >
-        DEPTNO = #{record.deptno,jdbcType=DECIMAL},
+      <if test="record.email != null" >
+        Email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneNo != null" >
+        Phone_No = #{record.phoneNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        Address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentId != null" >
+        Department_Id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.positionId != null" >
+        Position_Id = #{record.positionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.salary != null" >
+        Salary = #{record.salary,jdbcType=DOUBLE},
+      </if>
+      <if test="record.contractId != null" >
+        Contract_Id = #{record.contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.employeeDesc != null" >
+        Employee_Desc = #{record.employeeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark1 != null" >
+        remark1 = #{record.remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark2 != null" >
+        remark2 = #{record.remark2,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -204,55 +302,100 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update EMP
-    set EMPNO = #{record.empno,jdbcType=DECIMAL},
-      ENAME = #{record.ename,jdbcType=VARCHAR},
-      JOB = #{record.job,jdbcType=VARCHAR},
-      MGR = #{record.mgr,jdbcType=DECIMAL},
-      HIREDATE = #{record.hiredate,jdbcType=TIMESTAMP},
-      SAL = #{record.sal,jdbcType=DECIMAL},
-      COMM = #{record.comm,jdbcType=DECIMAL},
-      DEPTNO = #{record.deptno,jdbcType=DECIMAL}
+    update employee
+    set Employee_Id = #{record.employeeId,jdbcType=VARCHAR},
+      Employee_Name = #{record.employeeName,jdbcType=VARCHAR},
+      Employee_Id_No = #{record.employeeIdNo,jdbcType=VARCHAR},
+      Gender = #{record.gender,jdbcType=INTEGER},
+      Born_Date = #{record.bornDate,jdbcType=TIMESTAMP},
+      Degree = #{record.degree,jdbcType=VARCHAR},
+      School_Tag = #{record.schoolTag,jdbcType=VARCHAR},
+      Email = #{record.email,jdbcType=VARCHAR},
+      Phone_No = #{record.phoneNo,jdbcType=INTEGER},
+      Address = #{record.address,jdbcType=VARCHAR},
+      Department_Id = #{record.departmentId,jdbcType=INTEGER},
+      Position_Id = #{record.positionId,jdbcType=INTEGER},
+      Salary = #{record.salary,jdbcType=DOUBLE},
+      Contract_Id = #{record.contractId,jdbcType=VARCHAR},
+      Employee_Desc = #{record.employeeDesc,jdbcType=VARCHAR},
+      remark1 = #{record.remark1,jdbcType=VARCHAR},
+      remark2 = #{record.remark2,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.hz.ssm.pojo.Employee" >
-    update EMP
+    update employee
     <set >
-      <if test="ename != null" >
-        ENAME = #{ename,jdbcType=VARCHAR},
+      <if test="employeeName != null" >
+        Employee_Name = #{employeeName,jdbcType=VARCHAR},
       </if>
-      <if test="job != null" >
-        JOB = #{job,jdbcType=VARCHAR},
+      <if test="employeeIdNo != null" >
+        Employee_Id_No = #{employeeIdNo,jdbcType=VARCHAR},
       </if>
-      <if test="mgr != null" >
-        MGR = #{mgr,jdbcType=DECIMAL},
+      <if test="gender != null" >
+        Gender = #{gender,jdbcType=INTEGER},
       </if>
-      <if test="hiredate != null" >
-        HIREDATE = #{hiredate,jdbcType=TIMESTAMP},
+      <if test="bornDate != null" >
+        Born_Date = #{bornDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="sal != null" >
-        SAL = #{sal,jdbcType=DECIMAL},
+      <if test="degree != null" >
+        Degree = #{degree,jdbcType=VARCHAR},
       </if>
-      <if test="comm != null" >
-        COMM = #{comm,jdbcType=DECIMAL},
+      <if test="schoolTag != null" >
+        School_Tag = #{schoolTag,jdbcType=VARCHAR},
       </if>
-      <if test="deptno != null" >
-        DEPTNO = #{deptno,jdbcType=DECIMAL},
+      <if test="email != null" >
+        Email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        Phone_No = #{phoneNo,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        Address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        Department_Id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="positionId != null" >
+        Position_Id = #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="salary != null" >
+        Salary = #{salary,jdbcType=DOUBLE},
+      </if>
+      <if test="contractId != null" >
+        Contract_Id = #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeDesc != null" >
+        Employee_Desc = #{employeeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null" >
+        remark2 = #{remark2,jdbcType=VARCHAR},
       </if>
     </set>
-    where EMPNO = #{empno,jdbcType=DECIMAL}
+    where Employee_Id = #{employeeId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hz.ssm.pojo.Employee" >
-    update EMP
-    set ENAME = #{ename,jdbcType=VARCHAR},
-      JOB = #{job,jdbcType=VARCHAR},
-      MGR = #{mgr,jdbcType=DECIMAL},
-      HIREDATE = #{hiredate,jdbcType=TIMESTAMP},
-      SAL = #{sal,jdbcType=DECIMAL},
-      COMM = #{comm,jdbcType=DECIMAL},
-      DEPTNO = #{deptno,jdbcType=DECIMAL}
-    where EMPNO = #{empno,jdbcType=DECIMAL}
+    update employee
+    set Employee_Name = #{employeeName,jdbcType=VARCHAR},
+      Employee_Id_No = #{employeeIdNo,jdbcType=VARCHAR},
+      Gender = #{gender,jdbcType=INTEGER},
+      Born_Date = #{bornDate,jdbcType=TIMESTAMP},
+      Degree = #{degree,jdbcType=VARCHAR},
+      School_Tag = #{schoolTag,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      Phone_No = #{phoneNo,jdbcType=INTEGER},
+      Address = #{address,jdbcType=VARCHAR},
+      Department_Id = #{departmentId,jdbcType=INTEGER},
+      Position_Id = #{positionId,jdbcType=INTEGER},
+      Salary = #{salary,jdbcType=DOUBLE},
+      Contract_Id = #{contractId,jdbcType=VARCHAR},
+      Employee_Desc = #{employeeDesc,jdbcType=VARCHAR},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR}
+    where Employee_Id = #{employeeId,jdbcType=VARCHAR}
   </update>
 </mapper>
